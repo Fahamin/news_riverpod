@@ -48,7 +48,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               color: Colors.grey[600],
             )),
       ),
-      body: Column(
+     /* body: Column(
         children: [
           Container(
             padding: EdgeInsets.all(5),
@@ -103,7 +103,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             snapshot.data!.articles![index].publishedAt!);
 
                         return InkWell(
-                         /* onTap: () {
+                         *//* onTap: () {
                             String newsImage =
                             snapshot.data!.articles![index].urlToImage!;
                             String newsTitle =
@@ -129,7 +129,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         newsDesc,
                                         newsContent,
                                         newsSource)));
-                          },*/
+                          },*//*
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 15),
                             child: Row(
@@ -213,7 +213,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             ),
           ),
         ],
-      ),
+      ),*/
     );
   }
 

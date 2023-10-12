@@ -7,13 +7,10 @@ import '../model/all_news_model.dart';
 final providerAllNews =
     FutureProvider.family<AllNewsModel, String>((ref, cat) async {
   //NewsRepository newsRepository = NewsRepository();
-
-  return NewsRepository().fetchAllNews(cat);
+  return NewsRepository().fetchNews(cat);
 });
 
 final providerHeadLines =
-    FutureProvider.family<NewsChannelHeadlinesModel, String>(
-        (ref, cat) async {
-
+    FutureProvider.family<NewsChannelHeadlinesModel, String>((ref, cat) async {
   return NewsRepository().fetchNewsChannelHeadlinesApi(cat);
 });
