@@ -68,8 +68,9 @@ class HomePage extends ConsumerWidget {
               if (SampleItem.independent.name == item.name) {
                 name = 'independent';
               }
+
               selectedMenu = item;
-              data = ref.refresh(providerHeadLines(name));
+              data = ref.watch(providerHeadLines(name));
 
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
@@ -106,9 +107,9 @@ class HomePage extends ConsumerWidget {
                     itemCount: list.articles?.length,
                     itemBuilder: (BuildContext con, int index) {
                       debugPrint(list.articles![index].title);
-
                       return ListTile(
                         onTap: () async {
+
                           /*Get.toNamed(Routes.player,
                               arguments: list.articles['title']);*/
                         },
@@ -120,4 +121,6 @@ class HomePage extends ConsumerWidget {
               })),
     );
   }
+
+
 }
