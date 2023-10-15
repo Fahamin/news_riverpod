@@ -5,22 +5,24 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-
 import '../riverpodProvider/provider_handler.dart';
 import '../route/routes.dart';
 
 enum SampleItem { bbcNews, alJjazeera, independent, reuters, cnn }
 
-class HomePage extends ConsumerWidget {
-  HomePage({super.key});
+class HomePage extends ConsumerStatefulWidget {
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _createHomePageState();
+}
 
+class _createHomePageState extends ConsumerState<HomePage> {
   final format = new DateFormat('MMMM dd,yyyy');
 
   SampleItem? selectedMenu;
   String name = 'bbc-news';
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     double Kwidth = MediaQuery.of(context).size.width;
     double Kheight = MediaQuery.of(context).size.height;
     var data = ref.watch(providerHeadLines(name));
@@ -68,10 +70,10 @@ class HomePage extends ConsumerWidget {
               if (SampleItem.independent.name == item.name) {
                 name = 'independent';
               }
-
-              selectedMenu = item;
-              data = ref.watch(providerHeadLines(name));
-
+              setState(() {
+                selectedMenu = item;
+                data = ref.watch(providerHeadLines(name));
+              });
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
               const PopupMenuItem<SampleItem>(
@@ -109,7 +111,6 @@ class HomePage extends ConsumerWidget {
                       debugPrint(list.articles![index].title);
                       return ListTile(
                         onTap: () async {
-
                           /*Get.toNamed(Routes.player,
                               arguments: list.articles['title']);*/
                         },
@@ -121,6 +122,4 @@ class HomePage extends ConsumerWidget {
               })),
     );
   }
-
-
 }
