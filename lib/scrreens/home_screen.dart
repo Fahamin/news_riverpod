@@ -26,12 +26,15 @@ class _createHomePageState extends ConsumerState<HomePage> {
     double Kwidth = MediaQuery.of(context).size.width;
     double Kheight = MediaQuery.of(context).size.height;
     var data = ref.watch(providerHeadLines(name));
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed(Routes.categoryScree);
+          },
           icon: Image.asset(
             'images/category_icon.png',
             height: Kheight * 0.05,
@@ -70,10 +73,8 @@ class _createHomePageState extends ConsumerState<HomePage> {
               if (SampleItem.independent.name == item.name) {
                 name = 'independent';
               }
-              setState(() {
-                selectedMenu = item;
-                data = ref.watch(providerHeadLines(name));
-              });
+              selectedMenu = item;
+              setState(() {});
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
               const PopupMenuItem<SampleItem>(
@@ -110,10 +111,6 @@ class _createHomePageState extends ConsumerState<HomePage> {
                     itemBuilder: (BuildContext con, int index) {
                       debugPrint(list.articles![index].title);
                       return ListTile(
-                        onTap: () async {
-                          /*Get.toNamed(Routes.player,
-                              arguments: list.articles['title']);*/
-                        },
                         title: Text(list.articles![index].title.toString()),
                         trailing: Icon(Icons.more_vert),
                         leading: Icon(Icons.link),

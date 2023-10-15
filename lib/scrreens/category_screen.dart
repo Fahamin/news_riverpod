@@ -1,21 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:d_view/d_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:untitled/repository/news_repository.dart';
+import 'package:untitled/route/routes.dart';
 
 import '../model/all_news_model.dart';
+import '../riverpodProvider/provider_handler.dart';
+import 'details_screen.dart';
 
-class CategoriesScreen extends StatefulWidget {
+class CategoriesScreen extends ConsumerStatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
   _CategoriesScreenState createState() => _CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> {
+class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
   List<String> btnCategories = [
     'General',
     'Entertainment',
@@ -26,29 +32,35 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   ];
   final format = new DateFormat('MMMM dd,yyyy');
 
-
   int btnSelected = 0;
   String selectedCategory = 'General';
+
   @override
   Widget build(BuildContext context) {
+    var data = ref.watch(providerAllNews(selectedCategory));
     double Kwidth = MediaQuery.of(context).size.width;
     double Kheight = MediaQuery.of(context).size.height;
-    final width  = MediaQuery.sizeOf(context).width * 1 ;
-    final height  = MediaQuery.sizeOf(context).height * 1 ;
+    final width = MediaQuery.sizeOf(context).width * 1;
+    final height = MediaQuery.sizeOf(context).height * 1;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.grey[600],
-            )),
+          onPressed: Get.back,
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.grey[400],
+          ),
+        ),
+        centerTitle: true,
+        title: Text("News Category",style: TextStyle(
+          color: Colors.blue
+        ),),
       ),
-     /* body: Column(
+      body: Column(
         children: [
           Container(
             padding: EdgeInsets.all(5),
@@ -58,165 +70,162 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(left: 8),
+                    padding: EdgeInsets.only(left: 8),
                     child: Container(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              primary: index == btnSelected
-                                  ? Colors.blueAccent
-                                  : Colors.grey),
-                          onPressed: () {
-                            btnSelected = index;
-                            selectedCategory = btnCategories[index];
-                            setState(() {});
-                          },
-                          child: Text(
-                            btnCategories[index],
-                            style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        )),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            primary: index == btnSelected
+                                ? Colors.blueAccent
+                                : Colors.grey),
+                        onPressed: () {
+                          btnSelected = index;
+                          selectedCategory = btnCategories[index];
+                          setState(() {});
+                        },
+                        child: Text(
+                          btnCategories[index],
+                          style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
                   );
                 }),
           ),
           Expanded(
-            child: FutureBuilder<AllNewsModel>(
-              future:
-              NewsRepository().fetchAllNews(selectedCategory.toLowerCase()),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: SpinKitChasingDots(
-                    color: Colors.blue,
-                    size: 40.0,
-                  ));
-                } else {
-                  return ListView.builder(
+              child: data.when(
+                  data: (data) {
+                    return ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data!.articles!.length,
+                      itemCount: data.articles?.length,
                       itemBuilder: (context, index) {
-                        DateTime dateTime = DateTime.parse(
-                            snapshot.data!.articles![index].publishedAt!);
-
+                        DateTime dateTime =
+                            DateTime.parse(data.articles![index].publishedAt!);
                         return InkWell(
-                         *//* onTap: () {
+                          onTap: () {
                             String newsImage =
-                            snapshot.data!.articles![index].urlToImage!;
-                            String newsTitle =
-                            snapshot.data!.articles![index].title!;
+                                data!.articles![index].urlToImage!;
+                            String newsTitle = data!.articles![index].title!;
                             String newsDate =
-                            snapshot.data!.articles![index].publishedAt!;
-                            String newsAuthor =
-                            snapshot.data!.articles![index].author!;
+                                data!.articles![index].publishedAt!;
+                            String newsAuthor = data!.articles![index].author!;
                             String newsDesc =
-                            snapshot.data!.articles![index].description!;
+                                data!.articles![index].description!;
                             String newsContent =
-                            snapshot.data!.articles![index].content!;
+                                data!.articles![index].content!;
                             String newsSource =
-                            snapshot.data!.articles![index].source!.name!;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewsDetailScreen(
-                                        newsImage,
-                                        newsTitle,
-                                        newsDate,
-                                        newsAuthor,
-                                        newsDesc,
-                                        newsContent,
-                                        newsSource)));
-                          },*//*
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
-                                    fit: BoxFit.cover,
-                                    height: height * .18,
-                                    width:  width * .3,
-                                    placeholder:  (context , url) => Container(child: Center(
-                                      child: SpinKitCircle(
-                                        size: 50,
-                                        color: Colors.blue,
-                                      ),
-                                    ),),
-                                    errorWidget: (context, url  ,error) => Icon(Icons.error_outline ,color: Colors.red,),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 12),
-                                    child: Container(
-                                      height: height * .18,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            '${snapshot.data!.articles![index].title!}',
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 15,
-                                                color: Colors.black87,
-                                                fontWeight: FontWeight.w600),
-                                            // softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 3,
+                                data!.articles![index].source!.name!;
+
+                            Get.toNamed(Routes.details, arguments: [
+                              newsImage,
+                              newsTitle,
+                              newsDate,
+                              newsAuthor,
+                              newsDesc,
+                              newsContent,
+                              newsSource
+                            ]);
+                          },
+                          child: Expanded(
+
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: data!.articles![index]!.urlToImage
+                                          .toString(),
+                                      fit: BoxFit.cover,
+                                      height: 100,
+                                      width: 90,
+                                      placeholder: (context, url) => Container(
+                                        child: Center(
+                                          child: SpinKitChasingDots(
+                                            size: 50,
+                                            color: Colors.blue,
                                           ),
-                                          Spacer(),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(snapshot.data!.articles![index].source!.name.toString(),
-
-                                                style:
-                                                GoogleFonts.poppins(fontSize: 13 , fontWeight: FontWeight.w600)
-                                                ,),
-                                              Text(format.format(dateTime),
-                                                overflow: TextOverflow.ellipsis
-                                                ,style:
-                                                GoogleFonts.poppins(fontSize: 12 , fontWeight: FontWeight.w500)
-                                                ,)
-                                            ],
-                                          )
-
-                                        ],
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) => Icon(
+                                        Icons.error_outline,
+                                        color: Colors.red,
                                       ),
                                     ),
                                   ),
-                                )
-                              ],
+                                  Expanded(
+                                      child: Padding(
+                                    padding: EdgeInsets.only(left: 12),
+                                    child: Container(
+                                        height: 100,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              data.articles![index].title
+                                                  .toString(),
+                                              style: GoogleFonts.poppins(
+                                                  fontSize: 15,
+                                                  color: Colors.black54,
+                                                  fontWeight: FontWeight.w600),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                            DView.spaceHeight(),
+                                            Expanded(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    data!.articles![index].source!
+                                                        .name
+                                                        .toString(),
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Text(
+                                                    format.format(dateTime),
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        )),
+                                  ))
+                                ],
+                              ),
                             ),
                           ),
                         );
-                        // return Row(
-                        //   children: [
-                        //     Column(
-                        //       children: [
-                        //         Text(snapshot.data!.articles![index].title!),
-                        //       ],
-                        //     ),
-
-                        //   ],
-                        // );
-                      });
-                }
-              },
-            ),
-          ),
+                      },
+                    );
+                  },
+                  error: (error, str) => Text(error.toString()),
+                  loading: () => SpinKitChasingDots(
+                        color: Colors.blue,
+                        size: 40,
+                      )))
         ],
-      ),*/
+      ),
     );
   }
-
-
 }
-

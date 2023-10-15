@@ -17,6 +17,7 @@ class SplashScreen extends StatelessWidget {
     Timer(Duration(seconds: 2), () {
       Get.offNamed(Routes.homePage);
     });
+
     final height = MediaQuery.sizeOf(context).height * 1 ;
     final width = MediaQuery.sizeOf(context).width * 1 ;
 

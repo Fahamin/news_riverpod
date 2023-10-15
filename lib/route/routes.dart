@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../scrreens/category_screen.dart';
+import '../scrreens/details_screen.dart';
 import '../scrreens/home_screen.dart';
 import '../scrreens/splash_screen.dart';
 
@@ -8,9 +10,9 @@ class Routes {
 
   static String splashScreen = '/splashScreen';
 
-  static String categoryScree = '/m3uPage';
+  static String categoryScree = '/category';
 
-  static String playlist = '/playlist';
+  static String details = '/details';
 
   static String buildPage = '/buildPage';
 
@@ -37,7 +39,13 @@ appRoutes() => [
       GetPage(name: Routes.splashScreen, page: () => SplashScreen()),
       GetPage(
         name: Routes.categoryScree,
-        page: () => HomePage(),
+        page: () => CategoriesScreen(),
+        transition: Transition.leftToRightWithFade,
+        transitionDuration: Duration(milliseconds: 500),
+      ),
+      GetPage(
+        name: Routes.details,
+        page: () => NewsDetailsScreen(),
         transition: Transition.leftToRightWithFade,
         transitionDuration: Duration(milliseconds: 500),
       ),
