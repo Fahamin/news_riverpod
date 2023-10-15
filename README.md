@@ -1,16 +1,5 @@
-# untitled
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+State Managment with riverpod...
+Route managment with Getx....
+https://github.com/Fahamin/news_riverpod/assets/30957186/ca821b80-944d-4507-931a-0b8fc7d3198a
+https://github.com/Fahamin/news_riverpod/assets/30957186/723a0da9-d197-4749-b327-e4494bddbe0e
+https://github.com/Fahamin/news_riverpod/assets/30957186/a1d4fee3-7791-420d-b2ff-c0daf2d56a7b
